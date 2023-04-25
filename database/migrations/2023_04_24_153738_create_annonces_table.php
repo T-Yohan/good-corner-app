@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('annonces', function (Blueprint $table) {
             $table->id();
+            //création de la clé étrangère
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
-            $table->name();
-            $table->Description();
-            $table->Prix();
-            $table->image();
+            $table->string('name',60);
+            $table->text('Description')->nullable();
+            $table->float('Prix')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
