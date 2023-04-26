@@ -32,12 +32,20 @@ Route::middleware('auth')->group(function () {
 
 //création des routes pour l'administration
 Route::middleware('auth',/*'can:admin'*/)->group(function () {
+
     Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
+
     Route::get('admin/category', [CategoryController::class, 'index'])->name('admin.category');
     Route::post('admin/category', [CategoryController::class, 'store'])->name('admin.category.store');
+    Route::post('admin/category/{id}', [CategoryController::class, 'update'])->name('admin.category.update');
+    Route::get('admin/category/{id}', [CategoryController::class, 'delete'])->name('admin.category.delete');
+
+
     Route::get('admin/annonce', [AnnonceController::class, 'index'])->name('admin.annonce');
     Route::get('admin/annonce/create', [AnnonceController::class, 'create'])->name('admin.annonce.create');
     Route::get('admin/annonce/edit', [AnnonceController::class, 'edit'])->name('admin.annonce.edit');
+
 });
 
 require __DIR__.'/auth.php';

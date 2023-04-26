@@ -57,6 +57,12 @@ class CategoryController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        dd($request);
+        $categoryId = Category::find($id);
+        $categoryId->icone = 'o';
+        $categoryId->save();
+
+        return redirect(route('admin.category'));
     }
 
     /**
@@ -65,5 +71,8 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         //
+        $categoryId = Category::find($id);
+        $categoryId->delete();
+        return redirect(route('admin.category'));
     }
 }
