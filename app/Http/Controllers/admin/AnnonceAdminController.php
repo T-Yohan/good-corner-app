@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Annonce;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AnnonceAdminController extends Controller
 {
@@ -21,6 +24,8 @@ class AnnonceAdminController extends Controller
     public function create()
     {
         //
+        $categories = Category::orderBy('name','asc')->get();
+        return view('admin.annonce.ajouter', compact('categories'));
 
     }
 
@@ -29,7 +34,21 @@ class AnnonceAdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request);
+        $annonceModel = new Annonce;
+        $request->validate(['annonce'=>"require|min:5"]);
+        $annonceModel->category_id = 1;
+        $annonceModel->user_id = Auth::user()->id;
+        $annonceModel->name = $request->name;
+        $annonceModel->description = $request->description;
+        $annonceModel->prix = $request->prix;
+
+
+        // dd($request);
+
+        $annonceModel->save();
+        return redirect(route('admin.annonce.store'));
+
     }
 
     /**
@@ -46,6 +65,9 @@ class AnnonceAdminController extends Controller
     public function edit(string $id)
     {
         //
+        $annonce = Annonce::findOrFail($id);
+        $annonce = Annonce::orderBy('name','asc')->get();
+        return view('admin.annonce.lister',compact('annonce'));
     }
 
     /**
@@ -54,6 +76,13 @@ class AnnonceAdminController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $annonce = Annonce::findOrFail($id);
+        $request->validate(['annonce'=>"required|min:5"]);
+        $annonce->category_id = $request->category;
+        $actu->description = $request->description;
+        $actu->titre = $request->titre;
+        $actu->save();
+        return view('admin.annonce.modifier');
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\AnnonceAdminController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -42,9 +43,12 @@ Route::middleware('auth',/*'can:admin'*/)->group(function () {
     Route::get('admin/category/{id}', [CategoryController::class, 'delete'])->name('admin.category.delete');
 
 
-    Route::get('admin/annonce', [AnnonceController::class, 'index'])->name('admin.annonce');
-    Route::get('admin/annonce/create', [AnnonceController::class, 'create'])->name('admin.annonce.create');
-    Route::get('admin/annonce/edit', [AnnonceController::class, 'edit'])->name('admin.annonce.edit');
+    Route::get('admin/annonce', [AnnonceAdminController::class, 'index'])->name('admin.annonce');
+    Route::get('admin/annonce/store', [AnnonceAdminController::class, 'create'])->name('admin.annonce.create');
+    Route::post('admin/annonce/store', [AnnonceAdminController::class, 'store'])->name('admin.annonce.store');
+
+    Route::get('admin/annonce/edit/{id}', [AnnonceAdminController::class, 'edit'])->name('admin.annonce.edit');
+    Route::post('admin/annonce/edit/{id}', [AnnonceAdminController::class, 'update'])->name('admin.annonce.update');
 
 });
 
