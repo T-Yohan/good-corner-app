@@ -7,6 +7,7 @@ use App\Models\Annonce;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AnnonceAdminController extends Controller
 {
@@ -15,7 +16,10 @@ class AnnonceAdminController extends Controller
      */
     public function index()
     {
-        //
+        //affichage de la liste
+        $annonces = Annonce::paginate(5);
+
+        return view('admin.annonce.lister',compact('annonces'));
     }
 
     /**
@@ -24,9 +28,8 @@ class AnnonceAdminController extends Controller
     public function create()
     {
         //
-        $categories = Category::orderBy('name','asc')->get();
+        $categories = Category::orderBy('name', 'asc')->get();
         return view('admin.annonce.ajouter', compact('categories'));
-
     }
 
     /**
@@ -34,21 +37,26 @@ class AnnonceAdminController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request);
+        // dd($request);
         $annonceModel = new Annonce;
-        $request->validate(['annonce'=>"require|min:5"]);
+        $request->validate(['name' => "required|min:5", 'prix' => "required"]);
         $annonceModel->category_id = 1;
         $annonceModel->user_id = Auth::user()->id;
         $annonceModel->name = $request->name;
         $annonceModel->description = $request->description;
         $annonceModel->prix = $request->prix;
 
-
         // dd($request);
+
+        //gestion de chargement de l'image
+        if ($request->file()) {
+            $fileName = $request->image->store('public/images'); //renommer le fichier de destination
+            $annonceModel->image = $fileName;
+        }
+
 
         $annonceModel->save();
         return redirect(route('admin.annonce.store'));
-
     }
 
     /**
@@ -65,9 +73,9 @@ class AnnonceAdminController extends Controller
     public function edit(string $id)
     {
         //
-        $annonce = Annonce::findOrFail($id);
-        $annonce = Annonce::orderBy('name','asc')->get();
-        return view('admin.annonce.lister',compact('annonce'));
+        $annonceEdit = Annonce::findOrFail($id);
+        $annonceEdit = Annonce::orderBy('name', 'asc')->get();
+        return view('admin.annonce.lister', compact('annonces'));
     }
 
     /**
@@ -75,14 +83,25 @@ class AnnonceAdminController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
-        $annonce = Annonce::findOrFail($id);
-        $request->validate(['annonce'=>"required|min:5"]);
-        $annonce->category_id = $request->category;
-        $actu->description = $request->description;
-        $actu->titre = $request->titre;
-        $actu->save();
-        return view('admin.annonce.modifier');
+        dd($request);
+
+        $annonceUpd = Annonce::findOrFail($id);
+        $request->validate(['name' => "required|min:5",'prix']);
+        $annonceUpd->category_id = $request->category;   //reçois l'id dans le champ selectionné
+        $annonceUpd->user_id = Auth::user()->id;
+        $annonceUpd->name = $request->name;
+        $annonceUpd->description = $request->description;
+        $annonceUpd->prix = $request->prix;
+        $annonceUpd->save(); //enregistrement
+
+        if ($request->file()) {
+            $fileName = $request->image->store('public/images'); //renommer le fichier de destination
+            $annonceUpd->image = $fileName;
+
+
+        }
+        // return view('admin.annonce.modifier');
+            return redirect('admin.annonce.update',compact('annonce'));
     }
 
     /**

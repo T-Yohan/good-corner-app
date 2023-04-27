@@ -44,6 +44,7 @@ Route::middleware('auth',/*'can:admin'*/)->group(function () {
 
 
     Route::get('admin/annonce', [AnnonceAdminController::class, 'index'])->name('admin.annonce');
+
     Route::get('admin/annonce/store', [AnnonceAdminController::class, 'create'])->name('admin.annonce.create');
     Route::post('admin/annonce/store', [AnnonceAdminController::class, 'store'])->name('admin.annonce.store');
 
