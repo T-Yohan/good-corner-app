@@ -72,10 +72,11 @@ class AnnonceAdminController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        //une annonce avec $id
         $annonceEdit = Annonce::findOrFail($id);
-        $annonceEdit = Annonce::orderBy('name', 'asc')->get();
-        return view('admin.annonce.lister', compact('annonces'));
+// les categories
+        $categoryEdit = Annonce::orderBy('name', 'asc')->get();
+        return view('admin.annonce.modifier', compact('annonceEdit','categoryEdit'));
     }
 
     /**
