@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Route::get('/dashboard', function () {
@@ -49,8 +49,8 @@ Route::middleware('auth',/*'can:admin'*/)->group(function () {
     Route::post('admin/annonce/store', [AnnonceAdminController::class, 'store'])->name('admin.annonce.store');
 
     Route::get('admin/annonce/edit/{id}', [AnnonceAdminController::class, 'edit'])->name('admin.annonce.edit');
-    Route::post('admin/annonce/edit/{id}', [AnnonceAdminController::class, 'update'])->name('admin.annonce.update');
-
+    Route::post('admin/annonce/update/{id}', [AnnonceAdminController::class, 'update'])->name('admin.annonce.update');
+    Route::get('admin/annonce/delete/{id}', [AnnonceAdminController::class, 'destroy'])->name('admin.annonce.delete');
 });
 
 require __DIR__.'/auth.php';

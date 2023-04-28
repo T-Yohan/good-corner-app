@@ -19,10 +19,24 @@
         <label for="categorie" class="mb-3 block text-base font-medium text-[#07074D]">
             Categorie
         </label>
-        <input type="text" name="categorie" placeholder="Selectionnez une catégorie"
-        value="selectionnez une categorie"
-        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+        <select name="categorie"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        @foreach ($categories as $itemCategory)
 
+        @if (!empty($annonce) && $itemCategory->id == $annonce->category_id)
+
+        <option value="{{$itemCategory->id}}"selected>{{$itemCategory->name}}</option>
+
+        @else
+
+        <option value="{{$itemCategory->id}}">{{$itemCategory->name}}</option>
+
+        @endif
+
+
+        @endforeach
+
+    </select>
 
         <div class="mb-5">
             <label for="image" class="mb-3 block text-base font-medium text-[#07074D]">

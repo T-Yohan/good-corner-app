@@ -2,7 +2,7 @@
 
 @section('main')
     <form
-        action="{{route('admin.annonce.update',$annonceEdit->id)}}"
+        action="{{route('admin.annonce.update',$annonce->id)}}"
         method="POST" enctype="multipart/form-data">
         {{-- !empty($editAnnonce) ? route('admin.annonce.edit', $annonce->id) : route('admin.annonce.ajouter') --}}
         @csrf
@@ -12,16 +12,31 @@
                 Titre
             </label>
             <input type="text" name="name" placeholder="Saisissez une annonce"
-                value="{{$annonceEdit->name}}"
+                value="{{$annonce->name}}"
                 class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
         </div>
 
         <label for="categorie" class="mb-3 block text-base font-medium text-[#07074D]">
             Categorie
         </label>
-        <input type="text" name="categorie" placeholder="Selectionnez une catégorie"
-        value="{{$annnonceEdit->categorie}}"
-        class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+        <select name="categorie"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        @foreach ($categories as $itemCategory)
+
+        @if (!empty($itemAnnonce) && $itemCategory->id == $itemAnnonce->category_id)
+
+        <option value="{{$itemCategory->id}}"selected>{{$itemCategory->name}}</option>
+
+        @else
+
+        <option value="{{$itemCategory->id}}">{{$itemCategory->name}}</option>
+
+        @endif
+
+
+        @endforeach
+
+    </select>
 
 
         <div class="mb-5">
@@ -29,7 +44,7 @@
                 Image
             </label>
                 <div class="relative h-20 w-20">
-                    <img class="h-full w-full object-cover object-center" src="#"
+                    <img class="h-full w-full object-cover object-center" src="{{Storage::url($annonce->image)}}"
                         alt="" />
                 </div>
             <input type="file" name="image" placeholder="Ajoutez une image"
@@ -48,7 +63,7 @@
                 Prix
             </label>
             <input type="number" name="prix" placeholder="Saisissez un prix"
-                value="{{$annonceEdit->Prix}}"
+                value="{{$annonce->Prix}}"
                 class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
         </div>
         <div class="mt-3">
@@ -57,4 +72,5 @@
         </div>
 
     </form>
+
 @endsection

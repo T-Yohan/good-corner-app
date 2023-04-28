@@ -73,10 +73,13 @@ class AnnonceAdminController extends Controller
     public function edit(string $id)
     {
         //une annonce avec $id
-        $annonceEdit = Annonce::findOrFail($id);
+        $annonce = Annonce::findOrFail($id);
         // les categories
-        $categoryEdit = Annonce::orderBy('name', 'asc')->get();
-        return view('admin.annonce.modifier', compact('annonceEdit','categoryEdit'));
+        $categories = Category::orderBy('name', 'asc')->get();
+
+        //dd($annonceEdit,$categoryEdit);
+
+        return view('admin.annonce.modifier', compact('annonce','categories'));
     }
 
     /**
@@ -111,5 +114,19 @@ class AnnonceAdminController extends Controller
     public function destroy(string $id)
     {
         //
+        $annonce = Annonce::findOrFail($id); //recupération d'une news à partir de son identifiant
+        if($annonce->image !='' ){
+            Storage::delete ($annonce->image) ; //verifier l'existence du fichier
+         } //delete file
+
+
+            $annonce->delete($id); //suppression de l'actualité à partir de l'identifiant
+
+
+
+            return redirect(route('admin.annonce')) ;
     }
 }
+
+
+
