@@ -74,7 +74,7 @@ class AnnonceAdminController extends Controller
     {
         //une annonce avec $id
         $annonceEdit = Annonce::findOrFail($id);
-// les categories
+        // les categories
         $categoryEdit = Annonce::orderBy('name', 'asc')->get();
         return view('admin.annonce.modifier', compact('annonceEdit','categoryEdit'));
     }
